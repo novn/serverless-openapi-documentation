@@ -98,7 +98,7 @@ export class DefinitionGenerator {
     for (const funcConfig of config) {
       // loop through http events
       for (const httpEvent of this.getHttpEvents(funcConfig.events)) {
-        const httpEventConfig = httpEvent.http;
+        const httpEventConfig = httpEvent.http || httpEvent.httpApi;  // support httpApi event
 
         if (httpEventConfig.documentation) {
           // Build OpenAPI path configuration structure for each method
@@ -377,6 +377,6 @@ export class DefinitionGenerator {
   }
 
   private getHttpEvents(funcConfig) {
-    return funcConfig.filter(event => (event.http ? true : false));
+    return funcConfig.filter(event => ((event.http || event.httpApi) ? true : false));
   }
 }

@@ -101,9 +101,12 @@ export class DefinitionGenerator {
         const httpEventConfig = httpEvent.http || httpEvent.httpApi;  // support httpApi event
 
         if (httpEventConfig.documentation) {
+          // Remove leading slash from path
+          const normalizedPath = httpEventConfig.path.replace(/^\/+/g, '');
+
           // Build OpenAPI path configuration structure for each method
           const pathConfig = {
-            [`/${httpEventConfig.path}`]: {
+            [`/${normalizedPath}`]: {
               [httpEventConfig.method.toLowerCase()]: this.getOperationFromConfig(
                 funcConfig._functionName,
                 httpEventConfig.documentation
